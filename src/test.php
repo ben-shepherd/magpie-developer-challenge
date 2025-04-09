@@ -9,13 +9,13 @@ use App\Formatter\ScrapedProduct\ScrapedProductTransformer;
 $json = <<<EOF
 [
     {
-        "title": "iPhone 12 Pro Max 128GB",
-        "price": "1099.99",
-        "imageUrl": "../images/iphone-12-pro.png",
-        "variant": "Sky Blue",
-        "capacity": "128GB",
-        "availabilityText": "                            Availability: In Stock Online                        ",
-        "shippingText": "                                Delivery by Thursday 10th Apr 2025                            "
+        "title": "Nokia 3310 100MB",
+        "price": "99.99",
+        "imageUrl": "../images/nokia-3310.png",
+        "variant": "Blue",
+        "capacity": "100MB",
+        "availabilityText": "                            Availability: Out of Stock                        ",
+        "shippingText": "                                Delivery from 9 May 2025                            "
     }
 ]
 EOF;

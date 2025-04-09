@@ -46,9 +46,8 @@ class ScrapedProductTransformer
         $transformer->logger->info("transformToHardwareProduct result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
         
         // Process each PhoneProduct and keep only the first occurrence of each unique product
-        // $dtoArray = $transformer->transformRemoveDuplicates($dtoArray);
-
-
+        $dtoArray = $transformer->transformRemoveDuplicates($dtoArray);
+        $transformer->logger->info("transformRemoveDuplicates result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
 
         // Return only the values (PhoneProduct objects) without the keys
         return $dtoArray;
@@ -78,11 +77,16 @@ class ScrapedProductTransformer
                 $result[$key] = $value;
             }
 
-            $this->logger->info("Trimming lines: " . json_encode($result));
             return PhoneProduct::fromArray($result);
         }, $dtoArray);
     }
 
+    /**
+     * Removes white spaces and new lines from a string
+     * 
+     * @param string|null $text The string to trim
+     * @return string|null The trimmed string or null if the input is null
+     */
     protected function trim(string|null $text): string|null
     {
         if($text === null) {
@@ -249,9 +253,17 @@ class ScrapedProductTransformer
      * 
      * @param array $PhoneProduct Array representation of a PhoneProduct
      * @return string Unique identifier string in the format "model:version:color:capacityMb"
+     * 
+     * Example: "iPhone 12 Pro Max:128GB:Sky Blue:1099.99:true:2025-04-10"
      */
     protected function getUniquePhoneProductId(array $PhoneProduct): string
     {
-        return $PhoneProduct['model'] . ':' . $PhoneProduct['version'] . ':' . $PhoneProduct['color'] . ':' . $PhoneProduct['capacityMb'];
+        return $PhoneProduct['model'] . 
+        ':' . $PhoneProduct['version'] .
+        ':' . $PhoneProduct['color'] .
+        ':' . $PhoneProduct['capacityMb'] .
+        ':' . $PhoneProduct['price'] .
+        ':' . ($PhoneProduct['isAvailable'] ? 'true' : 'false') .
+        ':' . $PhoneProduct['shippingDate'];
     }
 }

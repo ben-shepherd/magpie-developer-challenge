@@ -10,6 +10,8 @@ class DateExctractor
 
     static function extractDate(string $text): DateTime|false
     {
+        $logger = new LoggerService();
+
         if (preg_match('/Delivery by/', $text)) {
             return extractDeliveryByDate($text);
         } elseif (preg_match('/Available on/', $text)) {
@@ -54,7 +56,23 @@ function extractDeliveryFromDate(string $text): DateTime|false
     $matches = [];
     preg_match($pattern, $text, $matches);
     $date = $matches[1];
-    return DateTime::createFromFormat('l jS F Y', $date);
+
+    $likelyBeginsWithDayOfWeek = in_array($date, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
+    $likelyContainsSuffix = in_array(strtolower($date), ['st', 'nd', 'rd', 'th']);
+
+    if($likelyBeginsWithDayOfWeek) {
+        if($likelyContainsSuffix) {
+            return DateTime::createFromFormat('l j M Y', $date);
+        } else {
+            return DateTime::createFromFormat('l jS M Y', $date);
+        }
+    } else {
+        if($likelyContainsSuffix) {
+            return DateTime::createFromFormat('j M Y', $date);
+        } else {
+            return DateTime::createFromFormat('jS M Y', $date);
+        }
+    }
 }
 
 function extractDeliversDate(string $text): DateTime|false
