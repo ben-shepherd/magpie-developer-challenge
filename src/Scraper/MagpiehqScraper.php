@@ -63,16 +63,15 @@ class MagpiehqScraper extends BaseScraper
      */
     protected function scrapeDocument(Crawler $documentCrawler): void
     {
+        // Final array of products
+        $allProducts = [];
+
         // Find all product nodes in the document
         $productNodes = $documentCrawler->filter('div.product');
 
-        $this->logger->info('Scraping ' . $productNodes->count() . ' products');
-
-        $allProducts = [];
-
         // Process each product node
         foreach ($productNodes as $productNode) {
-            $allProducts = array_merge($allProducts, $this->handleProduct($productNode));
+            $allProducts = array_merge($allProducts, $this->createScrapedProductData($productNode));
         }
 
         $this->setProducts($allProducts);
@@ -84,7 +83,7 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return ScrapedProduct[]
      */
-    protected function handleProduct(DOMNode $product): array
+    protected function createScrapedProductData(DOMNode $product): array
     {
         $crawler = new Crawler($product);
         $title = $crawler->filter('h3')->text();
@@ -94,8 +93,6 @@ class MagpiehqScraper extends BaseScraper
         $variants = $this->handleVariant($product);
         $capacity = $this->handleCapacity($title);
         $shippingText = $this->handleShippingText($product);
-
-        $this->logger->info('Scraping product: ' . $title . ' with price: ' . $price . ' and variants: ' . implode(', ', $variants) . ' and capacity: ' . $capacity);
 
         // Create a ScrapedProduct for each variant
         return array_map(function (string $variant) use ($title, $price, $imgUrl, $availabilityText, $capacity, $shippingText) {

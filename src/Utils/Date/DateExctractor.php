@@ -4,6 +4,13 @@ namespace App\Utils\Date;
 
 use DateTime;
 
+/**
+ * Class DateExtractor
+ * 
+ * Provides functionality to extract dates from various text formats.
+ * 
+ * @package App\Utils\Date
+ */
 class DateExctractor
 {
 
@@ -35,6 +42,12 @@ class DateExctractor
     }
 }
 
+/**
+ * Extracts a date for "tomorrow" from the given text.
+ * 
+ * @param string $text The text containing "tomorrow"
+ * @return DateTime|false The date for tomorrow or false if extraction fails
+ */
 function extractTomorrowDate(string $text): DateTime|false
 {
     $now = new DateTime();
@@ -42,6 +55,12 @@ function extractTomorrowDate(string $text): DateTime|false
     return $now;
 }
 
+/**
+ * Extracts a date from text containing "Delivery by" followed by a date.
+ * 
+ * @param string $text The text containing "Delivery by" followed by a date
+ * @return DateTime|false The extracted date or false if extraction fails
+ */
 function extractDeliveryByDate(string $text): DateTime|false
 {
     $pattern = '/Delivery by (.*)/';
@@ -52,6 +71,12 @@ function extractDeliveryByDate(string $text): DateTime|false
     return DateTime::createFromFormat('l jS F Y', $date);
 }
 
+/**
+ * Extracts a date from text containing "Available on" followed by a date.
+ * 
+ * @param string $text The text containing "Available on" followed by a date
+ * @return DateTime|false The extracted date or false if extraction fails
+ */
 function extractAvailableOnDate(string $text): DateTime|false
 {   
     $pattern = '/Available on (.*)/';
@@ -62,6 +87,12 @@ function extractAvailableOnDate(string $text): DateTime|false
     return DateTime::createFromFormat('j M Y', $date);
 }
 
+/**
+ * Extracts a date from text containing "Delivery from" followed by a date.
+ * 
+ * @param string $text The text containing "Delivery from" followed by a date
+ * @return DateTime|false The extracted date or false if extraction fails
+ */
 function extractDeliveryFromDate(string $text): DateTime|false
 {
     $pattern = '/Delivery from (.*)/';
@@ -87,6 +118,12 @@ function extractDeliveryFromDate(string $text): DateTime|false
     }
 }
 
+/**
+ * Extracts a date from text containing "Delivers" followed by a date.
+ * 
+ * @param string $text The text containing "Delivers" followed by a date
+ * @return DateTime|false The extracted date or false if extraction fails
+ */
 function extractDeliversDate(string $text): DateTime|false
 {
     $pattern = '/Delivers (.*)/';
@@ -114,6 +151,12 @@ function extractDeliversDate(string $text): DateTime|false
     }
 }
 
+/**
+ * Extracts a date from text containing "Free Delivery" followed by a date.
+ * 
+ * @param string $text The text containing "Free Delivery" followed by a date
+ * @return DateTime|false The extracted date or false if extraction fails
+ */
 function extractFreeDeliveryDate(string $text): DateTime|false
 {
     $pattern = '/Free Delivery (.*)/';
@@ -136,6 +179,12 @@ function extractFreeDeliveryDate(string $text): DateTime|false
     }
 }
 
+/**
+ * Extracts a date from text containing "Order within" followed by a date.
+ * 
+ * @param string $text The text containing "Order within" followed by a date
+ * @return DateTime|false The extracted date or false if extraction fails
+ */
 function extractOrderWithinDate(string $text): DateTime|false
 {
     $pattern = '/Order within .* and have it (.*)/';

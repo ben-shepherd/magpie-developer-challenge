@@ -42,11 +42,11 @@ class ScrapedProductTransformer
         $transformer = new self();
 
         // Transform all scraped products to PhoneProduct objects
-        $dtoArray = $transformer->transformToHardwareProduct($scrapedProducts);
-        $transformer->logger->info("transformToHardwareProduct result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
+        $dtoArray = $transformer->transformToPhoneProductData($scrapedProducts);
+        $transformer->logger->info("transformToPhoneProductData result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
         
         // Process each PhoneProduct and keep only the first occurrence of each unique product
-        $dtoArray = $transformer->transformRemoveDuplicates($dtoArray);
+        $dtoArray = $transformer->removeDuplicatePhoneProducts($dtoArray);
         $transformer->logger->info("transformRemoveDuplicates result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
 
         // Return only the values (PhoneProduct objects) without the keys
@@ -61,12 +61,17 @@ class ScrapedProductTransformer
      */
     protected function trimLines(array $dtoArray): array
     {
+        // These are the keys that require trimming
         $requiresTrim = ['shippingText', 'availabilityText', 'shippingDate'];
 
+        // Map over the array and trim the keys that require it
         return array_map(function (PhoneProduct $dto) use ($requiresTrim) {
-            $data = $dto->toArray();
             $result = [];
 
+            // Convert the PhoneProduct object to an array
+            $data = $dto->toArray();
+
+            // Loop over the array and trim the keys that require it
             foreach($data as $key => $value) {
 
                 if(in_array($key, $requiresTrim) && is_string($value)) {
@@ -108,7 +113,7 @@ class ScrapedProductTransformer
      * @param PhoneProduct[] $dtoArray Array of PhoneProduct objects
      * @return PhoneProduct[] Deduplicated array of phone products
      */
-    protected function transformRemoveDuplicates(array $dtoArray): array
+    protected function removeDuplicatePhoneProducts(array $dtoArray): array
     {
         $transformer = new self();
 
@@ -148,10 +153,10 @@ class ScrapedProductTransformer
      * @param ScrapedProduct[] $scrapedProducts Array of scraped product data
      * @return PhoneProduct[] Array of transformed phone products
      */
-    protected function transformToHardwareProduct(array $scrapedProducts): array
+    protected function transformToPhoneProductData(array $scrapedProducts): array
     {
         return array_map(function (ScrapedProduct $scrapedProduct) {
-
+            
             $title = $scrapedProduct->title;
             $price = $scrapedProduct->price;
             $imageUrl = $this->refineImageUrl($scrapedProduct->imageUrl);

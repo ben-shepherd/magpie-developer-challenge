@@ -2,10 +2,6 @@
 
 namespace App\Services;
 
-use App\Data\ScrapedProduct;
-use App\Data\PhoneProduct;
-use App\Utils\Phone\StorageDetector;
-
 /**
  * Service class for processing and converting scraped product data into structured phone product data.
  * 
@@ -14,22 +10,6 @@ use App\Utils\Phone\StorageDetector;
  */
 class PhoneProductService
 {
-    /**
-     * Converts a ScrapedProduct into a structured PhoneProduct by extracting relevant information.
-     *
-     * @param ScrapedProduct $scrapedProduct The raw scraped product data
-     * @return PhoneProduct A structured phone product with standardized information
-     */
-    static function getFromScrapedProduct(ScrapedProduct $scrapedProduct): PhoneProduct
-    {
-        // Extract model, version, capacity, and color from the scraped product
-        $model = static::detectModel($scrapedProduct->title);
-        $version = static::detectVersion($scrapedProduct->title, $model);
-        $capacity = StorageDetector::extractStorageMegabytes($scrapedProduct->title);
-        $color = $scrapedProduct->variant;
-
-        return new PhoneProduct($model, $version, $capacity, $color);
-    }
 
     /**
      * Detects the phone model from the product title.

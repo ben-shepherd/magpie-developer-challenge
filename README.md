@@ -46,13 +46,22 @@ Please also send us your `output.json`.
 
 * PHP 7.4+
 * Composer
+* Docker (Optional if your system already has PHP installed)
 
 ### Setup
 
 ```
-git clone https://github.com/stickeeuk/magpie-developer-challenge.git
+git clone https://github.com/ben-shepherd/magpie-developer-challenge
+
 cd magpie-developer-challenge
-composer install
+
+docker-compose up
 ```
 
-To run the scrape you can use `php src/Scrape.php`
+To run the scrape you can use:
+
+```
+docker exec -it magpie-app sh
+
+php src/entry.php
+```

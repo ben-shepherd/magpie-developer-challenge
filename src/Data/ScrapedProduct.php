@@ -2,16 +2,46 @@
 
 namespace App\Data;
 
+/**
+ * Represents raw product data scraped from a source.
+ * 
+ * This class holds the basic information about a product that has been
+ * scraped from a website or other data source.
+ */
 class ScrapedProduct
 {
+    /** @var string The title or name of the product */
     public string $title;
+    
+    /** @var string The price of the product (may include currency symbol) */
     public string $price;
+    
+    /** @var string URL to the product's image */
     public string $imageUrl;
+    
+    /** @var string The variant or model of the product */
     public string $variant;
+    
+    /** @var string|null The capacity or size of the product, if applicable */
     public string|null $capacity;
+    
+    /** @var string|null Text describing the product's availability status */
     public string|null $availabilityText;
+    
+    /** @var string|null Text describing shipping information */
     public string|null $shippingText;
 
+    /**
+     * Creates a new ScrapedProduct instance.
+     *
+     * @param string $title The title or name of the product
+     * @param string $price The price of the product
+     * @param string $imageUrl URL to the product's image
+     * @param string $variant The variant or model of the product
+     * @param string|null $capacity The capacity or size of the product, if applicable
+     * @param string|null $availabilityText Text describing the product's availability status
+     * @param string|null $shippingText Text describing shipping information
+     */
     public function __construct(
         string $title,
         string $price,

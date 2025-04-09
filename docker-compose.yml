@@ -12,21 +12,21 @@ services:
     networks:
       - magpie-network
 
-  db:
-    image: mysql:5.7
-    container_name: magpie-db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: magpie
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_PASSWORD: password
-      MYSQL_USER: magpie
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - magpie-network
+  # db:
+  #   image: mysql:5.7
+  #   container_name: magpie-db
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_DATABASE: magpie
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_PASSWORD: password
+  #     MYSQL_USER: magpie
+  #     SERVICE_TAGS: dev
+  #     SERVICE_NAME: mysql
+  #   volumes:
+  #     - dbdata:/var/lib/mysql
+  #   networks:
+  #     - magpie-network
 
 networks:
   magpie-network:
