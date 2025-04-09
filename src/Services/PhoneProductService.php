@@ -82,6 +82,7 @@ class PhoneProductService
                 'P40 Pro+',
                 'P50',
                 'P50 Pro',
+                'P Smart',
             ],
             'samsung' => [
                 'Galaxy S20',
@@ -118,10 +119,20 @@ class PhoneProductService
                 'Xperia 10 VII',
             ],
             'oppo' => [
-                'Reno 10',
-                'Reno 10 Pro',
-                'Reno 10 Pro+',
-                'Reno 10 Pro+',
+                'Reno4',
+                'Reno4 Pro',
+                'Reno4 Pro 5G',
+                'Reno 4',
+                'Reno 4 Pro',
+                'Reno 4 Pro 5G',
+                'Reno 4 Pro+',
+                'Reno5',
+                'Reno5 Pro',
+                'Reno5 Pro+',
+                'Reno 5',
+                'Reno 5 Pro',
+                'Reno 5 Pro+',
+                
             ],
             'lg' => [
                 'G8',
