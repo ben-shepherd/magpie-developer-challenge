@@ -54,39 +54,6 @@ class ScrapedProductTransformer
     }
 
     /**
-     * Removes white spaces and new lines from the array
-     * 
-     * @param PhoneProduct[] $dtoArray
-     * @return PhoneProduct[]
-     */
-    protected function trimLines(array $dtoArray): array
-    {
-        // These are the keys that require trimming
-        $requiresTrim = ['shippingText', 'availabilityText', 'shippingDate'];
-
-        // Map over the array and trim the keys that require it
-        return array_map(function (PhoneProduct $dto) use ($requiresTrim) {
-            $result = [];
-
-            // Convert the PhoneProduct object to an array
-            $data = $dto->toArray();
-
-            // Loop over the array and trim the keys that require it
-            foreach($data as $key => $value) {
-
-                if(in_array($key, $requiresTrim) && is_string($value)) {
-                    $result[$key] = $this->trim($value);
-                    continue;
-                }
-
-                $result[$key] = $value;
-            }
-
-            return PhoneProduct::fromArray($result);
-        }, $dtoArray);
-    }
-
-    /**
      * Removes white spaces and new lines from a string
      * 
      * @param string|null $text The string to trim
