@@ -472,3 +472,33 @@ Transformed 10 products
         "shippingDate": "2025-05-09"
     }
 ]
+transformToHardwareProduct result:
+[
+    {
+        "model": "nokia",
+        "version": "3310",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
+        "capacityMb": 102400,
+        "color": "Blue",
+        "price": 99.99,
+        "availabilityText": "Availability: Out of Stock",
+        "isAvailable": false,
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": "2025-05-09"
+    }
+]
+transformRemoveDuplicates result:
+[
+    {
+        "model": "nokia",
+        "version": "3310",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
+        "capacityMb": 102400,
+        "color": "Blue",
+        "price": 99.99,
+        "availabilityText": "Availability: Out of Stock",
+        "isAvailable": false,
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": "2025-05-09"
+    }
+]

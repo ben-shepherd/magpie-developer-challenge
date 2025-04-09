@@ -3,16 +3,21 @@
 namespace App\Utils\Date;
 
 use DateTime;
-use App\Services\LoggerService;
 
 class DateExctractor
 {
 
+    /**
+     * Extracts a date from a text string.
+     * 
+     * @param string $text The text string to extract the date from
+     * @return DateTime|false The extracted date or false if no date is found
+     */
     static function extractDate(string $text): DateTime|false
     {
-        $logger = new LoggerService();
-
-        if (preg_match('/Delivery by/', $text)) {
+        if (preg_match('/tomorrow/', $text)) {
+            return extractTomorrowDate($text);
+        } elseif (preg_match('/Delivery by/', $text)) {
             return extractDeliveryByDate($text);
         } elseif (preg_match('/Available on/', $text)) {
             return extractAvailableOnDate($text);
@@ -28,6 +33,13 @@ class DateExctractor
         
         return false;
     }
+}
+
+function extractTomorrowDate(string $text): DateTime|false
+{
+    $now = new DateTime();
+    $now->modify('+1 day');
+    return $now;
 }
 
 function extractDeliveryByDate(string $text): DateTime|false
