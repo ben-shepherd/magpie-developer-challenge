@@ -23,10 +23,14 @@ class PhoneProductService
     {
         // Define keywords associated with each phone model
         $modelKeywords = [
-            'iphone' => ['iphone'],
-            'samsung' => ['samsung', 'galaxy'],
-            'huawei' => ['hua', 'huawei'],
+            'iphone' => ['iphone', 'apple'],
+            'samsung' => ['samsung galaxy', 'samsung', 'galaxy'],
+            'huawei' => ['huawei p', 'huawei', 'hau'],
             'nokia' => ['nokia'],
+            'google pixel' => ['google pixel', 'google', 'pixel'],
+            'sony' => ['sony xperia', 'sony', 'xperia'],
+            'oppo' => ['oppo reno', 'oppo', 'reno'],
+            'lg' => ['lg g', 'lg k', 'lg'],
         ];
 
         // Check if any of the model keywords are present in the title
@@ -52,7 +56,7 @@ class PhoneProductService
      */
     static function detectVersion(string $title, string $model): string | null
     {
-        // Define version keywords for each phone model
+        // Unfinished list of versions that should come from an external source
         $versionKeywords = [
             'iphone' => [
                 '11',
@@ -85,7 +89,60 @@ class PhoneProductService
                 'Galaxy S20 Ultra',
                 'Galaxy S21',
                 'Galaxy S21+',
-            ]
+                'Galaxy Flip'
+            ],
+            'google pixel' => [
+                'Pixel 4',
+                'Pixel 4 XL',
+                'Pixel 5',
+                'Pixel 5 Pro',
+                'Pixel 6',
+                'Pixel 6 Pro',
+                'Pixel 7',
+                'Pixel 7 Pro',
+                'Pixel 8',
+                'Pixel 8 Pro',
+            ],
+            'sony' => [
+                'Xperia 1',
+                'Xperia 1 II',
+                'Xperia 1 III',
+                'Xperia 5',
+                'Xperia 5 II',
+                'Xperia 10',
+                'Xperia 10 II',
+                'Xperia 10 III',
+                'Xperia 10 IV',
+                'Xperia 10 V',
+                'Xperia 10 VI',
+                'Xperia 10 VII',
+            ],
+            'oppo' => [
+                'Reno 10',
+                'Reno 10 Pro',
+                'Reno 10 Pro+',
+                'Reno 10 Pro+',
+            ],
+            'lg' => [
+                'G8',
+                'G8 ThinQ',
+                'G8X',
+                'G8X ThinQ',
+                'G9',
+                'G9 ThinQ',
+                'G9X',
+                'G9X ThinQ',
+                'G10',
+                'G10 Plus',
+                'G10 Plus',
+                'K42',
+                'K42 Plus',
+                'K52',
+                'K52 Plus',
+                'K62',
+                'K62 Plus',
+                
+            ],
         ];
 
         // Get the version keywords for the detected model, or empty array if model not found

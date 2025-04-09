@@ -8,6 +8,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use App\Data\ScrapedProduct;
 use App\Formatter\ScrapedProduct\ScrapedProductTransformer;
 use App\Utils\Phone\StorageDetector;
+use App\Data\PageData;
 
 /**
  * Class MagpiehqScraper
@@ -16,33 +17,64 @@ use App\Utils\Phone\StorageDetector;
  */
 class MagpiehqScraper extends BaseScraper
 {
-    public static $baseUrl = "https://www.magpiehq.com/developer-challenge/smartphones";
 
+    // In reality, this would likely come from a database or a config file
+    public static $baseUrl = "https://www.magpiehq.com/developer-challenge/smartphones";
     public static $imageBaseUrl = "https://www.magpiehq.com/developer-challenge";
 
     /**
      * Main scraping method that orchestrates the scraping process
+     * - Extracts all pages from the base URL
+     * - Scrapes each page
+     * - Transforms the scraped products
+     * - Sets the transformed products
      * 
      * @return void
      */
     public function scrape(): void
     {
-        // Fetch the document from the target URL
+        $this->logger->info('Extracting pages from ' . self::$baseUrl);
+
         $documentCrawler = ScrapeHelper::fetchDocument(self::$baseUrl);
 
-        // Scrape products
-        $this->scrapeDocument($documentCrawler);
-        $this->logger->info("Scraped products:\n" . json_encode($this->products, JSON_PRETTY_PRINT));
+        $pages = $this->extractPageData($documentCrawler);
 
-        // Transforms scraped products into PhoneProduct objects (more refined data)
+        $this->logger->info('Found ' . count($pages) . ' pages');
+        $this->logger->info(json_encode($pages, JSON_PRETTY_PRINT));
+
+        foreach($pages as $page) {
+            $this->scrapePage($page);
+        }
+    }
+
+    /**
+     * Scrapes a specific page
+     * 
+     * @param PageData $page The page data to scrape
+     * @return void
+     */
+    protected function scrapePage(PageData $page): void
+    {
+        $this->logger->info('Scraping page (' . $page->getPage() . '): ' . $page->getUrl());
+
+        // Fetch the document from the target URL
+        $documentCrawler = ScrapeHelper::fetchDocument($page->getUrl());
+
+        // Products in an array of ScrapedProduct objects (raw data)
+        $this->scrapeDocument($documentCrawler);
+
+        $this->logger->info("Scraped " . count($this->products) . " products");
+        $this->logger->jsonPrettyPrint($this->products);
+
+        // Transforms scraped products into PhoneProduct data objects (more refined data)
         // Duplicates are removed
         $transformedProducts = $this->transform();
 
-        $this->logger->info('Transformed ' . count($transformedProducts) . ' products');
-        $this->logger->info(json_encode($transformedProducts, JSON_PRETTY_PRINT));
-        
-        // Set the transformed products
-        $this->setProducts($transformedProducts);
+        $this->logger->info("Transformed:");
+        $this->logger->jsonPrettyPrint($transformedProducts);
+
+        // Append the transformed products
+        $this->appendProducts($transformedProducts);
     }
 
     /**
@@ -67,10 +99,10 @@ class MagpiehqScraper extends BaseScraper
         $allProducts = [];
 
         // Find all product nodes in the document
-        $productNodes = $documentCrawler->filter('div.product');
+        $divProductNodes = $documentCrawler->filter('div.product');
 
         // Process each product node
-        foreach ($productNodes as $productNode) {
+        foreach ($divProductNodes as $productNode) {
             $allProducts = array_merge($allProducts, $this->createScrapedProductData($productNode));
         }
 
@@ -83,16 +115,16 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return ScrapedProduct[]
      */
-    protected function createScrapedProductData(DOMNode $product): array
+    protected function createScrapedProductData(DOMNode $productNode): array
     {
-        $crawler = new Crawler($product);
+        $crawler = new Crawler($productNode);
         $title = $crawler->filter('h3')->text();
-        $price = $this->handlePrice($product);
-        $imgUrl = $this->handleImageUrl($product);
-        $availabilityText = $this->handleAvailabilityText($product);
-        $variants = $this->handleVariant($product);
+        $price = $this->handlePrice($productNode);
+        $imgUrl = $this->handleImageUrl($productNode);
+        $availabilityText = $this->handleAvailabilityText($productNode);
+        $variants = $this->handleVariant($productNode);
         $capacity = $this->handleCapacity($title);
-        $shippingText = $this->handleShippingText($product);
+        $shippingText = $this->handleShippingText($productNode);
 
         // Create a ScrapedProduct for each variant
         return array_map(function (string $variant) use ($title, $price, $imgUrl, $availabilityText, $capacity, $shippingText) {
@@ -114,9 +146,9 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return string|null The extracted shipping text or null if not found
      */
-    protected function handleShippingText(DOMNode $product): string | null
+    protected function handleShippingText(DOMNode $productNode): string | null
     {
-        $crawler = new Crawler($product);
+        $crawler = new Crawler($productNode);
         $divs = $crawler->filter('div');
         $occurances = [];
 
@@ -141,9 +173,9 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return string|null The extracted image URL or null if not found
      */
-    protected function handleImageUrl(DOMNode $product): string | null
+    protected function handleImageUrl(DOMNode $productNode): string | null
     {
-        $crawler = new Crawler($product);
+        $crawler = new Crawler($productNode);
         $imgUrl = $crawler->filter('img')->attr('src');
 
         return $imgUrl;
@@ -155,9 +187,9 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return string|null The extracted availability text or null if not found
      */
-    protected function handleAvailabilityText(DOMNode $product): string | null
+    protected function handleAvailabilityText(DOMNode $productNode): string | null
     {
-        $crawler = new Crawler($product);
+        $crawler = new Crawler($productNode);
         $divs = $crawler->filter('div');
         $occurances = [];
 
@@ -193,9 +225,9 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return array Array of color variants
      */
-    protected function handleVariant(DOMNode $product): array
+    protected function handleVariant(DOMNode $productNode): array
     {
-        $crawler = new Crawler($product);
+        $crawler = new Crawler($productNode);
         $variantNodes = $crawler->filter('span[data-colour]');
         $variants = [];
 
@@ -213,12 +245,12 @@ class MagpiehqScraper extends BaseScraper
     /**
      * Extracts price information from the product node
      * 
-     * @param DOMNode $product The product DOM node
+     * @param DOMNode $productNode The product DOM node
      * @return string|null The extracted price or null if not found
      */
-    protected function handlePrice(DOMNode $product): string | null
+    protected function handlePrice(DOMNode $productNode): string | null
     {
-        $crawler = new Crawler($product);
+        $crawler = new Crawler($productNode);
         $divs = $crawler->filter('div');
 
         $pattern = "/£([\d]+\.[\d]*)/";
@@ -231,5 +263,52 @@ class MagpiehqScraper extends BaseScraper
         }
 
         return null;
+    }
+
+    /**
+     * Extracts page data from the document crawler
+     * 
+     * @param Crawler $documentCrawler The crawler instance with the document
+     * @return array<PageData> The extracted page data
+     */
+    protected function extractPageData(Crawler $documentCrawler): array
+    {
+        $divPageNodes = $documentCrawler->filter('div#pages');
+        $aNodes = $divPageNodes->filter('a');
+
+        for($i = 0; $i < $aNodes->count(); $i++) {
+            $pageNumber = intval($aNodes->eq($i)->text());
+
+            $url = $this->formatUrl(
+                $aNodes->eq($i)->attr('href')
+            );
+
+            $pages[] = new PageData($pageNumber, $url);
+        }
+
+        return $pages;
+    }
+
+    /**
+     * Formats the URL
+     * 
+     * @param string $url The URL to format
+     * @return string The formatted URL
+     */
+    protected function formatUrl(string $url): string
+    {
+        if(str_starts_with($url, '..')) { 
+            $url = substr($url, 2);
+        }
+
+        if(str_starts_with($url, '/smartphones')) {
+            $url = substr($url, strlen('/smartphones'));
+        }
+
+        if(!str_starts_with($url, static::$baseUrl)) {
+            $url = static::$baseUrl . $url;
+        }
+
+        return  $url;
     }
 }

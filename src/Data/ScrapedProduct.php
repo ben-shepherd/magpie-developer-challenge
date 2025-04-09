@@ -59,4 +59,23 @@ class ScrapedProduct
         $this->availabilityText = $availabilityText;
         $this->shippingText = $shippingText;
     }
+
+    /**
+     * Converts the ScrapedProduct object to an array.
+     * 
+     * @return array<int, {title: string, price: string, imageUrl: string, variant: string, capacity: string|null, availabilityText: string|null, shippingText: string|null}> 
+     *  The array representation of the ScrapedProduct object
+     */
+    public function toArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'price' => $this->price,
+            'imageUrl' => $this->imageUrl,
+            'variant' => $this->variant,
+            'capacity' => $this->capacity,
+            'availabilityText' => $this->availabilityText,
+            'shippingText' => $this->shippingText,
+        ];
+    }
 }

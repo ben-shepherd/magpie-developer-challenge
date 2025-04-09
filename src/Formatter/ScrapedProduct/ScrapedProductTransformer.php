@@ -9,6 +9,7 @@ use App\Services\PhoneProductService;
 use App\Utils\Phone\StorageDetector;
 use App\Utils\Date\DateExctractor;
 use App\Scraper\MagpiehqScraper;
+use App\Utils\Trim;
 
 /**
  * Transformer class that removes duplicate phone products from scraped data.
@@ -46,28 +47,10 @@ class ScrapedProductTransformer
         $transformer->logger->info("transformToPhoneProductData result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
         
         // Process each PhoneProduct and keep only the first occurrence of each unique product
-        $dtoArray = $transformer->removeDuplicatePhoneProducts($dtoArray);
-        $transformer->logger->info("transformRemoveDuplicates result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
+        $dtoArray = $transformer->transformToUniquePhoneProductData($dtoArray);
+        $transformer->logger->info("transformToUniquePhoneProductData result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
 
-        // Return only the values (PhoneProduct objects) without the keys
         return $dtoArray;
-    }
-
-    /**
-     * Removes white spaces and new lines from a string
-     * 
-     * @param string|null $text The string to trim
-     * @return string|null The trimmed string or null if the input is null
-     */
-    protected function trim(string|null $text): string|null
-    {
-        if($text === null) {
-            return null;
-        }
-
-        $trimmed = str_replace("\n", "", $text);
-        $trimmed = trim(preg_replace('/\s\s+/', ' ', $trimmed));
-        return $trimmed;
     }
 
     /**
@@ -80,7 +63,7 @@ class ScrapedProductTransformer
      * @param PhoneProduct[] $dtoArray Array of PhoneProduct objects
      * @return PhoneProduct[] Deduplicated array of phone products
      */
-    protected function removeDuplicatePhoneProducts(array $dtoArray): array
+    protected function transformToUniquePhoneProductData(array $dtoArray): array
     {
         $transformer = new self();
 
@@ -105,7 +88,6 @@ class ScrapedProductTransformer
             }
         }
 
-        // Return only the values (PhoneProduct objects) without the keys
         return array_values($unqiuePhoneProduct);
     }
 
@@ -132,10 +114,12 @@ class ScrapedProductTransformer
             $colour = $scrapedProduct->variant;
             $capacityMb = StorageDetector::extractStorageMegabytes($title);
 
-            $availabilityText = $this->trim($scrapedProduct->availabilityText);
+            // Trim the availability text
+            $availabilityText = Trim::trimEmptySpacesAndNewLines($scrapedProduct->availabilityText);
             $isAvailable = $this->extractAvailabilityBoolean($availabilityText);
 
-            $shippingText = $this->trim($scrapedProduct->shippingText);
+            // Trim the shipping text
+            $shippingText = Trim::trimEmptySpacesAndNewLines($scrapedProduct->shippingText);
             $shippingDate = $this->extractShippingDate($shippingText);
 
             // Create and return a new PhoneProduct with    the extracted data
@@ -196,7 +180,6 @@ class ScrapedProductTransformer
             return null;
         }
 
-        // format date as Y-m-d
         $date = $date->format('Y-m-d');
 
         return $date;
@@ -227,16 +210,15 @@ class ScrapedProductTransformer
      * @param array $PhoneProduct Array representation of a PhoneProduct
      * @return string Unique identifier string in the format "model:version:color:capacityMb"
      * 
-     * Example: "iPhone 12 Pro Max:128GB:Sky Blue:1099.99:true:2025-04-10"
+     * Example: "iPhone12ProMax:128GB:SkyBlue"
      */
     protected function getUniquePhoneProductId(array $PhoneProduct): string
     {
-        return $PhoneProduct['model'] . 
-        ':' . $PhoneProduct['version'] .
-        ':' . $PhoneProduct['color'] .
-        ':' . $PhoneProduct['capacityMb'] .
-        ':' . $PhoneProduct['price'] .
-        ':' . ($PhoneProduct['isAvailable'] ? 'true' : 'false') .
-        ':' . $PhoneProduct['shippingDate'];
+        $id = $PhoneProduct['model'] . 
+            ':' . $PhoneProduct['version'] .
+            ':' . $PhoneProduct['color'] .
+            ':' . $PhoneProduct['capacityMb'];
+
+        return str_replace(' ', '', $id);
     }
 }

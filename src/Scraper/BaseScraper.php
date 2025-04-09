@@ -44,6 +44,17 @@ abstract class BaseScraper
     }
 
     /**
+     * Appends products to the existing products array.
+     *
+     * @param array $products Array of products to append
+     * @return void
+     */
+    public function appendProducts(array $products): void
+    {
+        $this->products = array_merge($this->products, $products);
+    }
+
+    /**
      * Retrieves the array of scraped products.
      *
      * @return array Array of scraped products

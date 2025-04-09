@@ -50,6 +50,12 @@ class LoggerService
         $this->logToConsole($message);
     }
 
+    public function jsonPrettyPrint(array $data): void
+    {
+        $this->log(json_encode($data, JSON_PRETTY_PRINT));
+        $this->logToConsole(json_encode($data, JSON_PRETTY_PRINT));
+    }
+
     /**
      * Logs an error message with timestamp and stack trace to both the log file and console
      * 
