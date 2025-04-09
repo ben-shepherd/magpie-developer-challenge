@@ -61,14 +61,14 @@ class MagpiehqScraper extends BaseScraper
         $documentCrawler = ScrapeHelper::fetchDocument($page->getUrl());
 
         // Products in an array of ScrapedProduct objects (raw data)
-        $this->scrapeDocument($documentCrawler);
+        $scrapedProducts = $this->scrapeDocument($documentCrawler, $page);
 
-        $this->logger->info("Scraped " . count($this->products) . " products");
-        $this->logger->jsonPrettyPrint($this->products);
+        $this->logger->info("Scraped " . count($scrapedProducts) . " products");
+        $this->logger->jsonPrettyPrint($scrapedProducts);
 
         // Transforms scraped products into PhoneProduct data objects (more refined data)
         // Duplicates are removed
-        $transformedProducts = $this->transform();
+        $transformedProducts = $this->transform($scrapedProducts);
 
         $this->logger->info("Transformed:");
         $this->logger->jsonPrettyPrint($transformedProducts);
@@ -80,20 +80,22 @@ class MagpiehqScraper extends BaseScraper
     /**
      * Removes duplicate products from the collection
      * 
-     * @return array<PhoneProduct>
+     * @param ScrapedProduct[] $scrapedProducts
+     * @return PhoneProduct[]
      */
-    protected function transform(): array
+    protected function transform(array $scrapedProducts): array
     {
-        return ScrapedProductTransformer::transform($this->products);
+        return ScrapedProductTransformer::transform($scrapedProducts);
     }
 
     /**
      * Scrapes the document for product information
      * 
      * @param Crawler $documentCrawler The crawler instance with the document
-     * @return void
+     * @param PageData $page The page data to scrape
+     * @return ScrapedProduct[]
      */
-    protected function scrapeDocument(Crawler $documentCrawler): void
+    protected function scrapeDocument(Crawler $documentCrawler, PageData $page): array
     {
         // Final array of products
         $allProducts = [];
@@ -103,10 +105,12 @@ class MagpiehqScraper extends BaseScraper
 
         // Process each product node
         foreach ($divProductNodes as $productNode) {
-            $allProducts = array_merge($allProducts, $this->createScrapedProductData($productNode));
+            $scrapedProducts = $this->createScrapedProductData($productNode, $page);
+
+            $allProducts = array_merge($allProducts, $scrapedProducts);
         }
 
-        $this->setProducts($allProducts);
+        return $allProducts;
     }
 
     /**
@@ -115,7 +119,7 @@ class MagpiehqScraper extends BaseScraper
      * @param DOMNode $product The product DOM node
      * @return ScrapedProduct[]
      */
-    protected function createScrapedProductData(DOMNode $productNode): array
+    protected function createScrapedProductData(DOMNode $productNode, PageData $page): array
     {
         $crawler = new Crawler($productNode);
         $title = $crawler->filter('h3')->text();
@@ -125,9 +129,10 @@ class MagpiehqScraper extends BaseScraper
         $variants = $this->handleVariant($productNode);
         $capacity = $this->handleCapacity($title);
         $shippingText = $this->handleShippingText($productNode);
+        $sourceUrl = $page->getUrl();
 
         // Create a ScrapedProduct for each variant
-        return array_map(function (string $variant) use ($title, $price, $imgUrl, $availabilityText, $capacity, $shippingText) {
+        return array_map(function (string $variant) use ($title, $price, $imgUrl, $availabilityText, $capacity, $shippingText, $sourceUrl) {
             return new ScrapedProduct(
                 $title,
                 $price,
@@ -135,7 +140,8 @@ class MagpiehqScraper extends BaseScraper
                 $variant,
                 $capacity,
                 $availabilityText,
-                $shippingText
+                $shippingText,
+                $sourceUrl
             );
         }, $variants);
     }

@@ -12,10 +12,11 @@ $json = <<<EOF
         "title": "Nokia 3310 100MB",
         "price": "99.99",
         "imageUrl": "../images/nokia-3310.png",
-        "variant": "Blue",
+        "variant": "Orange",
         "capacity": "100MB",
         "availabilityText": "                            Availability: Out of Stock                        ",
-        "shippingText": "                                Delivery from 9 May 2025                            "
+        "shippingText": "                                Delivery from Friday 9th May 2025                            ",
+        "sourceUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/smartphones?page=1"
     }
 ]
 EOF;
@@ -36,7 +37,8 @@ $scrapedProduct = new ScrapedProduct(
     $data[0]['variant'],
     $data[0]['capacity'],
     $data[0]['availabilityText'],
-    $data[0]['shippingText']
+    $data[0]['shippingText'],
+    $data[0]['sourceUrl']
 );
 
 echo 'Scraped Product: ' . json_encode($scrapedProduct, JSON_PRETTY_PRINT) . "\n\n";

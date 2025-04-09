@@ -12,7 +12,6 @@ class PageData
 
     public function __construct(int $page, string $url)
     {
-        (new LoggerService())->info('PageData constructor: ' . $page . ' ' . $url);
         $this->page = $page;
         $this->url = $url;
     }

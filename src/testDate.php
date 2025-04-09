@@ -6,7 +6,7 @@ use App\Utils\Date\DateExctractor;
 use App\Data\ScrapedProduct;
 use App\Formatter\ScrapedProduct\ScrapedProductTransformer;
 
-$str = "                                Delivery by tomorrow                            ";
+$str = "                                Delivery from Friday 9th May 2025                            ";
 
 function trimmer(string $text): string
 {

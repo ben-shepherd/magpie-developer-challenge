@@ -3,6 +3,7 @@
 namespace App\Utils\Date;
 
 use DateTime;
+use App\Services\LoggerService;
 
 /**
  * Class DateExtractor
@@ -22,6 +23,8 @@ class DateExctractor
      */
     static function extractDate(string $text): DateTime|false
     {
+        // This is far from perfect - requires a generic catch all that determines the possibilities of each format by checking each value/position and dynamically generating php format string
+
         if (preg_match('/tomorrow/', $text)) {
             return extractTomorrowDate($text);
         } elseif (preg_match('/Delivery by/', $text)) {
@@ -40,6 +43,54 @@ class DateExctractor
         
         return false;
     }
+}
+
+function attemptGenericDateExtraction(string|null $date): DateTime|false
+{
+    
+    $logger = new LoggerService();
+    $logger->info("Attempting generic date extraction for: $date");
+
+    if($date === null) {
+        return false;
+    }
+
+    $containsTomorrow = preg_match('/tomorrow/', $date);
+
+    if($containsTomorrow) {
+        return extractTomorrowDate($date);
+    }
+
+    $dashOccurances = substr_count($date, '-');
+    $likelyDashSeperated = $dashOccurances > 0;
+
+    if($likelyDashSeperated) {
+        return DateTime::createFromFormat('Y-m-d', $date);
+    }
+
+    $firstPart = explode(' ', $date)[0];
+    $likelyBeginsWithDayOfWeek = in_array(strtolower($firstPart), ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
+
+    $likelyContainsSuffix = in_array(strtolower($date), ['st', 'nd', 'rd', 'th']);
+
+    $logger->info("Likely begins with day of week: " . ($likelyBeginsWithDayOfWeek ? "true" : "false"));
+    $logger->info("Likely contains suffix: " . ($likelyContainsSuffix ? "true" : "false"));
+
+    if($likelyBeginsWithDayOfWeek) {
+        if($likelyContainsSuffix) {
+            return DateTime::createFromFormat('l j M Y', $date);
+        } else {
+            return DateTime::createFromFormat('l jS M Y', $date);
+        }
+    } else {
+        if($likelyContainsSuffix) {
+            return DateTime::createFromFormat('j M Y', $date);
+        } else {
+            return DateTime::createFromFormat('jS M Y', $date);
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -66,9 +117,9 @@ function extractDeliveryByDate(string $text): DateTime|false
     $pattern = '/Delivery by (.*)/';
     $matches = [];
     preg_match($pattern, $text, $matches);
-    echo "extractDeliveryByDate: " . json_encode($matches, JSON_PRETTY_PRINT);
-    $date = $matches[1];
-    return DateTime::createFromFormat('l jS F Y', $date);
+    $date = $matches[1] ?? null;
+
+    return attemptGenericDateExtraction($date);
 }
 
 /**
@@ -82,9 +133,9 @@ function extractAvailableOnDate(string $text): DateTime|false
     $pattern = '/Available on (.*)/';
     $matches = [];
     preg_match($pattern, $text, $matches);
-    $date = $matches[1];
+    $date = $matches[1] ?? null;
     
-    return DateTime::createFromFormat('j M Y', $date);
+    return attemptGenericDateExtraction($date);
 }
 
 /**
@@ -98,24 +149,9 @@ function extractDeliveryFromDate(string $text): DateTime|false
     $pattern = '/Delivery from (.*)/';
     $matches = [];
     preg_match($pattern, $text, $matches);
-    $date = $matches[1];
+    $date = $matches[1] ?? null;
 
-    $likelyBeginsWithDayOfWeek = in_array($date, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
-    $likelyContainsSuffix = in_array(strtolower($date), ['st', 'nd', 'rd', 'th']);
-
-    if($likelyBeginsWithDayOfWeek) {
-        if($likelyContainsSuffix) {
-            return DateTime::createFromFormat('l j M Y', $date);
-        } else {
-            return DateTime::createFromFormat('l jS M Y', $date);
-        }
-    } else {
-        if($likelyContainsSuffix) {
-            return DateTime::createFromFormat('j M Y', $date);
-        } else {
-            return DateTime::createFromFormat('jS M Y', $date);
-        }
-    }
+    return attemptGenericDateExtraction($date);
 }
 
 /**
@@ -129,26 +165,9 @@ function extractDeliversDate(string $text): DateTime|false
     $pattern = '/Delivers (.*)/';
     $matches = [];
     preg_match($pattern, $text, $matches);
-    $date = $matches[1];
-    
-    $textWithoutDelivers = str_replace('Delivers ', '', $text);
-    $firstPart = strtolower(explode(' ', $textWithoutDelivers)[0] ?? "");
-    $likelyBeginsWithDayOfWeek = in_array($firstPart, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
-    $likelyContainsSuffix = in_array(strtolower($date), ['st', 'nd', 'rd', 'th']);
+    $date = $matches[1] ?? null;
 
-    if ($likelyBeginsWithDayOfWeek) {
-        if($likelyContainsSuffix) {
-            return DateTime::createFromFormat('l j M Y', $date);
-        } else {
-            return DateTime::createFromFormat('l jS M Y', $date);
-        }
-    } else {
-        if($likelyContainsSuffix) {
-            return DateTime::createFromFormat('j M Y', $date);
-        } else {
-            return DateTime::createFromFormat('jS M Y', $date);
-        }
-    }
+    return attemptGenericDateExtraction($date);
 }
 
 /**
@@ -162,21 +181,9 @@ function extractFreeDeliveryDate(string $text): DateTime|false
     $pattern = '/Free Delivery (.*)/';
     $matches = [];
     preg_match($pattern, $text, $matches);
-    $date = $matches[1];
+    $date = $matches[1] ?? null;
     
-    // Check if the date is "tomorrow"
-    if ($date === 'tomorrow') {
-        $dateTime = new DateTime();
-        $dateTime->modify('+1 day');
-        return $dateTime;
-    }
-    
-    // Check if the date format includes the day of week
-    if (strpos($date, ' ') !== false && strpos($date, 'Apr') !== false) {
-        return DateTime::createFromFormat('l jS F Y', $date);
-    } else {
-        return DateTime::createFromFormat('Y-m-d', $date);
-    }
+    return attemptGenericDateExtraction($date);
 }
 
 /**
@@ -190,6 +197,7 @@ function extractOrderWithinDate(string $text): DateTime|false
     $pattern = '/Order within .* and have it (.*)/';
     $matches = [];
     preg_match($pattern, $text, $matches);
-    $date = $matches[1];
-    return DateTime::createFromFormat('j M Y', $date);
+    $date = $matches[1] ?? null;
+
+    return attemptGenericDateExtraction($date);
 }

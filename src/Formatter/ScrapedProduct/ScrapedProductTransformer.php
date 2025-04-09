@@ -135,6 +135,7 @@ class ScrapedProductTransformer
                 $isAvailable,
                 $shippingText,
                 $shippingDate,
+                $scrapedProduct->sourceUrl
             );
 
             return $hardwareProduct;

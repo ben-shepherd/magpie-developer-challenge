@@ -40,7 +40,10 @@ class PhoneProduct
     
     /** @var string|null Expected shipping date */
     public string|null $shippingDate;
-    
+
+    /** @var string The URL of the product's source */
+    public string $sourceUrl;
+
     /**
      * Constructor for creating a new PhoneProduct instance.
      *
@@ -67,7 +70,8 @@ class PhoneProduct
         string|null $availabilityText,
         bool $isAvailable,
         string|null $shippingText,
-        string|null $shippingDate
+        string|null $shippingDate,
+        string $sourceUrl
     ) {
         $this->title = $title;
         $this->model = $model;
@@ -80,6 +84,7 @@ class PhoneProduct
         $this->isAvailable = $isAvailable;
         $this->shippingText = $shippingText;
         $this->shippingDate = $shippingDate;
+        $this->sourceUrl = $sourceUrl;
     }
 
     /**
@@ -101,7 +106,8 @@ class PhoneProduct
             $data['availabilityText'],
             $data['isAvailable'],
             $data['shippingText'],
-            $data['shippingDate']
+            $data['shippingDate'],
+            $data['sourceUrl']
         );
     }
 

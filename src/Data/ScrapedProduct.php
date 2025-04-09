@@ -31,6 +31,9 @@ class ScrapedProduct
     /** @var string|null Text describing shipping information */
     public string|null $shippingText;
 
+    /** @var string The URL of the product's source */
+    public string $sourceUrl;
+
     /**
      * Creates a new ScrapedProduct instance.
      *
@@ -49,7 +52,8 @@ class ScrapedProduct
         string $variant,
         string|null $capacity,
         string|null $availabilityText,
-        string|null $shippingText
+        string|null $shippingText,
+        string $sourceUrl
     ) {
         $this->title = $title;
         $this->price = $price;
@@ -58,6 +62,7 @@ class ScrapedProduct
         $this->capacity = $capacity;
         $this->availabilityText = $availabilityText;
         $this->shippingText = $shippingText;
+        $this->sourceUrl = $sourceUrl;
     }
 
     /**
@@ -76,6 +81,7 @@ class ScrapedProduct
             'capacity' => $this->capacity,
             'availabilityText' => $this->availabilityText,
             'shippingText' => $this->shippingText,
+            'sourceUrl' => $this->sourceUrl,
         ];
     }
 }

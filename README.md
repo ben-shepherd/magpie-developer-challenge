@@ -1,3 +1,16 @@
+## BENJAMIN'S NOTES
+
+- Entry point starts at src/entry.php. Usage is noted at the bottom.
+
+- I have created the folder structure to be quite modular that would allow for large scale applications, keeping each class and method as simple as possible as to not cross contaminate concerns
+
+- The scraper has a base abstract class that in theory could be used for many different types of scrapers, typically for a large scale product I would try to make things generic as possible so they can be adapted to many different types of logic but return a familiar and predictable result
+
+- In the real world, a lot of the configuration I have hard coded would likely be better coming from an external source (db), this will make quick fixes easier and editable by anyone providing there's some UI to do so.
+
+- The data extractor (src\Utils\Date\DateExctractor.php) is extremely far from perfect. I know some values may be completely wrong despite having a date. If I had more time, I would build a super generic function that could take any date format, and using each value/part/position to determine it's likely value type, then dynamically generate the php date format string based on the findings to eventually resolve them into a standardised format 
+
+
 ## Magpie PHP Developer Challenge
 
 Your task is to gather data about the products listed on https://www.magpiehq.com/developer-challenge/smartphones
