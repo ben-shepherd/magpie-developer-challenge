@@ -47,10 +47,6 @@ class DateExctractor
 
 function attemptGenericDateExtraction(string|null $date): DateTime|false
 {
-    
-    $logger = new LoggerService();
-    $logger->info("Attempting generic date extraction for: $date");
-
     if($date === null) {
         return false;
     }
@@ -72,9 +68,6 @@ function attemptGenericDateExtraction(string|null $date): DateTime|false
     $likelyBeginsWithDayOfWeek = in_array(strtolower($firstPart), ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
 
     $likelyContainsSuffix = in_array(strtolower($date), ['st', 'nd', 'rd', 'th']);
-
-    $logger->info("Likely begins with day of week: " . ($likelyBeginsWithDayOfWeek ? "true" : "false"));
-    $logger->info("Likely contains suffix: " . ($likelyContainsSuffix ? "true" : "false"));
 
     if($likelyBeginsWithDayOfWeek) {
         if($likelyContainsSuffix) {
