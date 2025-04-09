@@ -3,11 +3,11 @@
 namespace App\Utils\Phone;
 
 /**
- * Class StorageDetector
+ * Class StorageExtractor
  * 
- * Utility class for detecting and extracting storage information from text.
+ * Utility class for extracting storage information from text.
  */
-class StorageDetector
+class StorageExtractor
 {
     /**
      * Extracts a storage string (e.g., "128GB" or "512MB") from the given text.

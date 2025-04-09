@@ -6,7 +6,7 @@ use App\Data\PhoneProduct;
 use App\Data\ScrapedProduct;
 use App\Services\LoggerService;
 use App\Services\PhoneProductService;
-use App\Utils\Phone\StorageDetector;
+use App\Utils\Phone\StorageExtractor;
 use App\Utils\Date\DateExctractor;
 use App\Scraper\MagpiehqScraper;
 use App\Utils\Trim;
@@ -112,7 +112,7 @@ class ScrapedProductTransformer
             $model = PhoneProductService::detectModel($title);
             $version = PhoneProductService::detectVersion($title, $model);
             $colour = $scrapedProduct->variant;
-            $capacityMb = StorageDetector::extractStorageMegabytes($title);
+            $capacityMb = StorageExtractor::extractStorageMegabytes($title);
 
             // Trim the availability text
             $availabilityText = Trim::trimEmptySpacesAndNewLines($scrapedProduct->availabilityText);

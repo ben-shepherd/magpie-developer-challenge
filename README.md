@@ -8,8 +8,9 @@
 
 - In the real world, a lot of the configuration I have hard coded would likely be better coming from an external source (db), this will make quick fixes easier and editable by anyone providing there's some UI to do so.
 
-- The data extractor (src\Utils\Date\DateExctractor.php) is extremely far from perfect. I know some values may be completely wrong despite having a date. If I had more time, I would build a super generic function that could take any date format, and using each value/part/position to determine it's likely value type, then dynamically generate the php date format string based on the findings to eventually resolve them into a standardised format 
+- The data extractor (src\Utils\Date\DateExctractor.php) is extremely far from perfect. I'm aware it has flaws and won't catch every single use case. If I had more time, I would build a super generic function that could take any date format, and using each value/part/position to determine it's likely value type, then dynamically generate the php date format string based on the findings to eventually resolve them into a standardised format 
 
+- The contents in output.json has more information than requeired, some of this was used for creating the logic, and some for debugging. If we only wanted certain information to be visible, a presentation layer could be added to only return the contents required
 
 ## Magpie PHP Developer Challenge
 

@@ -45,30 +45,42 @@ class DateExctractor
     }
 }
 
+/**
+ * Attempts to extract a date from a given text string.
+ * 
+ * This function checks for various date formats and returns a DateTime object if a valid date is found.
+ * 
+ * @param string|null $date The text string to extract the date from
+ * @return DateTime|false The extracted date or false if no date is found
+ */
 function attemptGenericDateExtraction(string|null $date): DateTime|false
 {
     if($date === null) {
         return false;
     }
 
-    $containsTomorrow = preg_match('/tomorrow/', $date);
-
+    // Check for "tomorrow"
+    $containsTomorrow = strpos($date, 'tomorrow') !== false;
     if($containsTomorrow) {
         return extractTomorrowDate($date);
     }
 
+    // Check for dash seperated date e.g. 2025-01-01
     $dashOccurances = substr_count($date, '-');
     $likelyDashSeperated = $dashOccurances > 0;
-
     if($likelyDashSeperated) {
         return DateTime::createFromFormat('Y-m-d', $date);
     }
 
+    // Check for day of week seperated date e.g. Monday 1st January 2025
     $firstPart = explode(' ', $date)[0];
     $likelyBeginsWithDayOfWeek = in_array(strtolower($firstPart), ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
 
+    // Check for suffix e.g. 1st, 2nd, 3rd, 4th
     $likelyContainsSuffix = in_array(strtolower($date), ['st', 'nd', 'rd', 'th']);
 
+    // If the date begins with a day of week and contains a suffix, use the format 'l j M Y'
+    // Otherwise use the format 'l jS M Y'
     if($likelyBeginsWithDayOfWeek) {
         if($likelyContainsSuffix) {
             return DateTime::createFromFormat('l j M Y', $date);

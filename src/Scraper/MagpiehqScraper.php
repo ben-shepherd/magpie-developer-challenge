@@ -7,7 +7,7 @@ use DOMNode;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Data\ScrapedProduct;
 use App\Formatter\ScrapedProduct\ScrapedProductTransformer;
-use App\Utils\Phone\StorageDetector;
+use App\Utils\Phone\StorageExtractor;
 use App\Data\PageData;
 
 /**
@@ -222,7 +222,7 @@ class MagpiehqScraper extends BaseScraper
      */
     protected function handleCapacity(string $title): string | null
     {
-        return StorageDetector::extractStorageString($title);
+        return StorageExtractor::extractStorageString($title);
     }
 
     /**
