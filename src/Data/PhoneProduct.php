@@ -4,6 +4,7 @@ namespace App\Data;
 
 class PhoneProduct
 {
+    public string $title;
     public string $model;
     public string $version;
     public string $imageUrl;
@@ -16,6 +17,7 @@ class PhoneProduct
     public string|null $shippingDate;
     
     public function __construct(
+        string $title,
         string $model,
         string $version,
         int $capacityMb,
@@ -27,6 +29,7 @@ class PhoneProduct
         string|null $shippingText,
         string|null $shippingDate
     ) {
+        $this->title = $title;
         $this->model = $model;
         $this->version = $version;
         $this->imageUrl = $imageUrl;
@@ -42,6 +45,7 @@ class PhoneProduct
     public static function fromArray(array $data): PhoneProduct
     {
         return new PhoneProduct(
+            $data['title'],
             $data['model'],
             $data['version'],
             $data['capacityMb'],

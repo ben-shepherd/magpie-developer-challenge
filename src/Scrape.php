@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Scraper\MagpiehqScraper;
+use App\Services\LoggerService;
 
 class Scrape
 {
@@ -16,5 +17,7 @@ class Scrape
 
         // Save products to file
         file_put_contents('output.json', json_encode($magpiehqScraper->getProducts(), JSON_PRETTY_PRINT));
+
+        (new LoggerService())->info("Scraped data saved to output.json");
     }
 }

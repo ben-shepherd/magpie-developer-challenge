@@ -32,11 +32,7 @@ class MagpiehqScraper extends BaseScraper
 
         // Scrape products
         $this->scrapeDocument($documentCrawler);
-        
         $this->logger->info("Scraped products:\n" . json_encode($this->products, JSON_PRETTY_PRINT));
-
-        // $this->logger->info('Scraped ' . count($this->products) . ' products');
-        // $this->logger->info(json_encode($this->products, JSON_PRETTY_PRINT));
 
         // Transforms scraped products into PhoneProduct objects (more refined data)
         // Duplicates are removed
@@ -44,7 +40,6 @@ class MagpiehqScraper extends BaseScraper
 
         $this->logger->info('Transformed ' . count($transformedProducts) . ' products');
         $this->logger->info(json_encode($transformedProducts, JSON_PRETTY_PRINT));
-        exit;
         
         // Set the transformed products
         $this->setProducts($transformedProducts);

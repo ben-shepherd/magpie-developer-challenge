@@ -168,6 +168,7 @@ class ScrapedProductTransformer
 
             // Create and return a new PhoneProduct with    the extracted data
             $hardwareProduct = new PhoneProduct(
+                $title,
                 $model,
                 $version,
                 $capacityMb,
