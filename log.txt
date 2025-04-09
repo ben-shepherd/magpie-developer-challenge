@@ -5,261 +5,225 @@ Scraping product: iPhone 12 Pro Max 128GB with price: 1099.99 and variants: Sky 
 Scraping product: Samsung Galaxy S20 128GB with price: 849.99 and variants: Grey and capacity: 128GB
 Scraping product: Huawei P30 Pro 128GB with price: 699.99 and variants: Black and capacity: 128GB
 Scraping product: Nokia 3310 100MB with price: 99.99 and variants: Orange, Yellow, Grey, Blue and capacity: 100MB
-transformToHardwareProduct
+Scraped products:
+[
+    {
+        "title": "iPhone 11 Pro 64 GB",
+        "price": "799.99",
+        "imageUrl": "..\/images\/iphone-11-pro.png",
+        "variant": "Green",
+        "capacity": "64 GB",
+        "availabilityText": "\n                            Availability: Out of Stock                        ",
+        "shippingText": null
+    },
+    {
+        "title": "iPhone 11 64GB",
+        "price": "699.99",
+        "imageUrl": "..\/images\/iphone-11.png",
+        "variant": "Black",
+        "capacity": "64GB",
+        "availabilityText": "\n                            Availability: In Stock at B90 4SB                        ",
+        "shippingText": "\n                                Unavailable for delivery                            "
+    },
+    {
+        "title": "iPhone 11 64GB",
+        "price": "699.99",
+        "imageUrl": "..\/images\/iphone-11.png",
+        "variant": "White",
+        "capacity": "64GB",
+        "availabilityText": "\n                            Availability: In Stock at B90 4SB                        ",
+        "shippingText": "\n                                Unavailable for delivery                            "
+    },
+    {
+        "title": "iPhone 12 Pro Max 128GB",
+        "price": "1099.99",
+        "imageUrl": "..\/images\/iphone-12-pro.png",
+        "variant": "Sky Blue",
+        "capacity": "128GB",
+        "availabilityText": "\n                            Availability: In Stock Online                        ",
+        "shippingText": "\n                                Delivery by Thursday 10th Apr 2025                            "
+    },
+    {
+        "title": "Samsung Galaxy S20 128GB",
+        "price": "849.99",
+        "imageUrl": "..\/images\/s-20.png",
+        "variant": "Grey",
+        "capacity": "128GB",
+        "availabilityText": "\n                            Availability: In Stock                        ",
+        "shippingText": null
+    },
+    {
+        "title": "Huawei P30 Pro 128GB",
+        "price": "699.99",
+        "imageUrl": "..\/images\/p-30.png",
+        "variant": "Black",
+        "capacity": "128GB",
+        "availabilityText": "\n                            Availability: In Stock                        ",
+        "shippingText": null
+    },
+    {
+        "title": "Nokia 3310 100MB",
+        "price": "99.99",
+        "imageUrl": "..\/images\/nokia-3310.png",
+        "variant": "Orange",
+        "capacity": "100MB",
+        "availabilityText": "\n                            Availability: Out of Stock                        ",
+        "shippingText": "\n                                Delivery from 9 May 2025                            "
+    },
+    {
+        "title": "Nokia 3310 100MB",
+        "price": "99.99",
+        "imageUrl": "..\/images\/nokia-3310.png",
+        "variant": "Yellow",
+        "capacity": "100MB",
+        "availabilityText": "\n                            Availability: Out of Stock                        ",
+        "shippingText": "\n                                Delivery from 9 May 2025                            "
+    },
+    {
+        "title": "Nokia 3310 100MB",
+        "price": "99.99",
+        "imageUrl": "..\/images\/nokia-3310.png",
+        "variant": "Grey",
+        "capacity": "100MB",
+        "availabilityText": "\n                            Availability: Out of Stock                        ",
+        "shippingText": "\n                                Delivery from 9 May 2025                            "
+    },
+    {
+        "title": "Nokia 3310 100MB",
+        "price": "99.99",
+        "imageUrl": "..\/images\/nokia-3310.png",
+        "variant": "Blue",
+        "capacity": "100MB",
+        "availabilityText": "\n                            Availability: Out of Stock                        ",
+        "shippingText": "\n                                Delivery from 9 May 2025                            "
+    }
+]
+debug 1
+debug 3
+debug 3
+debug 3
+debug 3
 transformToHardwareProduct result:
 [
     {
         "model": "iphone",
         "version": "11",
-        "imageUrl": "..\/images\/iphone-11-pro.png",
-        "capacityMb": 65536,
-        "color": "Green",
-        "price": 799.99,
-        "availabilityText": "\n                            Availability: Out of Stock                        ",
-        "isAvailable": false,
-        "shippingText": null,
-        "shippingDate": ""
-    },
-    {
-        "model": "iphone",
-        "version": "11",
-        "imageUrl": "..\/images\/iphone-11.png",
-        "capacityMb": 65536,
-        "color": "Black",
-        "price": 699.99,
-        "availabilityText": "\n                            Availability: In Stock at B90 4SB                        ",
-        "isAvailable": true,
-        "shippingText": "\n                                Unavailable for delivery                            ",
-        "shippingDate": "\n                                Unavailable for delivery                            "
-    },
-    {
-        "model": "iphone",
-        "version": "11",
-        "imageUrl": "..\/images\/iphone-11.png",
-        "capacityMb": 65536,
-        "color": "White",
-        "price": 699.99,
-        "availabilityText": "\n                            Availability: In Stock at B90 4SB                        ",
-        "isAvailable": true,
-        "shippingText": "\n                                Unavailable for delivery                            ",
-        "shippingDate": "\n                                Unavailable for delivery                            "
-    },
-    {
-        "model": "iphone",
-        "version": "12",
-        "imageUrl": "..\/images\/iphone-12-pro.png",
-        "capacityMb": 131072,
-        "color": "Sky Blue",
-        "price": 1099.99,
-        "availabilityText": "\n                            Availability: In Stock Online                        ",
-        "isAvailable": true,
-        "shippingText": "\n                                Delivery by 10 Apr 2025                            ",
-        "shippingDate": "\n                                Delivery by 10 Apr 2025                            "
-    },
-    {
-        "model": "samsung",
-        "version": "Galaxy S20",
-        "imageUrl": "..\/images\/s-20.png",
-        "capacityMb": 131072,
-        "color": "Grey",
-        "price": 849.99,
-        "availabilityText": "\n                            Availability: In Stock                        ",
-        "isAvailable": true,
-        "shippingText": null,
-        "shippingDate": ""
-    },
-    {
-        "model": "huawei",
-        "version": "P30",
-        "imageUrl": "..\/images\/p-30.png",
-        "capacityMb": 131072,
-        "color": "Black",
-        "price": 699.99,
-        "availabilityText": "\n                            Availability: In Stock                        ",
-        "isAvailable": true,
-        "shippingText": null,
-        "shippingDate": ""
-    },
-    {
-        "model": "nokia",
-        "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
-        "capacityMb": 102400,
-        "color": "Orange",
-        "price": 99.99,
-        "availabilityText": "\n                            Availability: Out of Stock                        ",
-        "isAvailable": false,
-        "shippingText": "\n                                Delivery from 2025-05-09                            ",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
-    },
-    {
-        "model": "nokia",
-        "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
-        "capacityMb": 102400,
-        "color": "Yellow",
-        "price": 99.99,
-        "availabilityText": "\n                            Availability: Out of Stock                        ",
-        "isAvailable": false,
-        "shippingText": "\n                                Delivery from 2025-05-09                            ",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
-    },
-    {
-        "model": "nokia",
-        "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
-        "capacityMb": 102400,
-        "color": "Grey",
-        "price": 99.99,
-        "availabilityText": "\n                            Availability: Out of Stock                        ",
-        "isAvailable": false,
-        "shippingText": "\n                                Delivery from 2025-05-09                            ",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
-    },
-    {
-        "model": "nokia",
-        "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
-        "capacityMb": 102400,
-        "color": "Blue",
-        "price": 99.99,
-        "availabilityText": "\n                            Availability: Out of Stock                        ",
-        "isAvailable": false,
-        "shippingText": "\n                                Delivery from 2025-05-09                            ",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
-    }
-]
-Trimming lines: {"model":"iphone","version":"11","capacityMb":65536,"color":"Green","imageUrl":"..\/images\/iphone-11-pro.png","price":799.99,"availabilityText":"Availability: Out of Stock","isAvailable":false,"shippingText":null,"shippingDate":""}
-Trimming lines: {"model":"iphone","version":"11","capacityMb":65536,"color":"Black","imageUrl":"..\/images\/iphone-11.png","price":699.99,"availabilityText":"Availability: In Stock at B90 4SB","isAvailable":true,"shippingText":"Unavailable for delivery","shippingDate":"\n                                Unavailable for delivery                            "}
-Trimming lines: {"model":"iphone","version":"11","capacityMb":65536,"color":"White","imageUrl":"..\/images\/iphone-11.png","price":699.99,"availabilityText":"Availability: In Stock at B90 4SB","isAvailable":true,"shippingText":"Unavailable for delivery","shippingDate":"\n                                Unavailable for delivery                            "}
-Trimming lines: {"model":"iphone","version":"12","capacityMb":131072,"color":"Sky Blue","imageUrl":"..\/images\/iphone-12-pro.png","price":1099.99,"availabilityText":"Availability: In Stock Online","isAvailable":true,"shippingText":"Delivery by 10 Apr 2025","shippingDate":"\n                                Delivery by 10 Apr 2025                            "}
-Trimming lines: {"model":"samsung","version":"Galaxy S20","capacityMb":131072,"color":"Grey","imageUrl":"..\/images\/s-20.png","price":849.99,"availabilityText":"Availability: In Stock","isAvailable":true,"shippingText":null,"shippingDate":""}
-Trimming lines: {"model":"huawei","version":"P30","capacityMb":131072,"color":"Black","imageUrl":"..\/images\/p-30.png","price":699.99,"availabilityText":"Availability: In Stock","isAvailable":true,"shippingText":null,"shippingDate":""}
-Trimming lines: {"model":"nokia","version":"3310","capacityMb":102400,"color":"Orange","imageUrl":"..\/images\/nokia-3310.png","price":99.99,"availabilityText":"Availability: Out of Stock","isAvailable":false,"shippingText":"Delivery from 2025-05-09","shippingDate":"\n                                Delivery from 2025-05-09                            "}
-Trimming lines: {"model":"nokia","version":"3310","capacityMb":102400,"color":"Yellow","imageUrl":"..\/images\/nokia-3310.png","price":99.99,"availabilityText":"Availability: Out of Stock","isAvailable":false,"shippingText":"Delivery from 2025-05-09","shippingDate":"\n                                Delivery from 2025-05-09                            "}
-Trimming lines: {"model":"nokia","version":"3310","capacityMb":102400,"color":"Grey","imageUrl":"..\/images\/nokia-3310.png","price":99.99,"availabilityText":"Availability: Out of Stock","isAvailable":false,"shippingText":"Delivery from 2025-05-09","shippingDate":"\n                                Delivery from 2025-05-09                            "}
-Trimming lines: {"model":"nokia","version":"3310","capacityMb":102400,"color":"Blue","imageUrl":"..\/images\/nokia-3310.png","price":99.99,"availabilityText":"Availability: Out of Stock","isAvailable":false,"shippingText":"Delivery from 2025-05-09","shippingDate":"\n                                Delivery from 2025-05-09                            "}
-trimLines result:
-[
-    {
-        "model": "iphone",
-        "version": "11",
-        "imageUrl": "..\/images\/iphone-11-pro.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-11-pro.png",
         "capacityMb": 65536,
         "color": "Green",
         "price": 799.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
         "shippingText": null,
-        "shippingDate": ""
+        "shippingDate": null
     },
     {
         "model": "iphone",
         "version": "11",
-        "imageUrl": "..\/images\/iphone-11.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-11.png",
         "capacityMb": 65536,
         "color": "Black",
         "price": 699.99,
         "availabilityText": "Availability: In Stock at B90 4SB",
         "isAvailable": true,
         "shippingText": "Unavailable for delivery",
-        "shippingDate": "\n                                Unavailable for delivery                            "
+        "shippingDate": null
     },
     {
         "model": "iphone",
         "version": "11",
-        "imageUrl": "..\/images\/iphone-11.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-11.png",
         "capacityMb": 65536,
         "color": "White",
         "price": 699.99,
         "availabilityText": "Availability: In Stock at B90 4SB",
         "isAvailable": true,
         "shippingText": "Unavailable for delivery",
-        "shippingDate": "\n                                Unavailable for delivery                            "
+        "shippingDate": null
     },
     {
         "model": "iphone",
         "version": "12",
-        "imageUrl": "..\/images\/iphone-12-pro.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-12-pro.png",
         "capacityMb": 131072,
         "color": "Sky Blue",
         "price": 1099.99,
         "availabilityText": "Availability: In Stock Online",
         "isAvailable": true,
-        "shippingText": "Delivery by 10 Apr 2025",
-        "shippingDate": "\n                                Delivery by 10 Apr 2025                            "
+        "shippingText": "Delivery by Thursday 10th Apr 2025",
+        "shippingDate": "2025-04-10"
     },
     {
         "model": "samsung",
         "version": "Galaxy S20",
-        "imageUrl": "..\/images\/s-20.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/s-20.png",
         "capacityMb": 131072,
         "color": "Grey",
         "price": 849.99,
         "availabilityText": "Availability: In Stock",
         "isAvailable": true,
         "shippingText": null,
-        "shippingDate": ""
+        "shippingDate": null
     },
     {
         "model": "huawei",
         "version": "P30",
-        "imageUrl": "..\/images\/p-30.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/p-30.png",
         "capacityMb": 131072,
         "color": "Black",
         "price": 699.99,
         "availabilityText": "Availability: In Stock",
         "isAvailable": true,
         "shippingText": null,
-        "shippingDate": ""
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Orange",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Yellow",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Grey",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Blue",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     }
 ]
 Transformed 10 products
@@ -267,121 +231,121 @@ Transformed 10 products
     {
         "model": "iphone",
         "version": "11",
-        "imageUrl": "..\/images\/iphone-11-pro.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-11-pro.png",
         "capacityMb": 65536,
         "color": "Green",
         "price": 799.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
         "shippingText": null,
-        "shippingDate": ""
+        "shippingDate": null
     },
     {
         "model": "iphone",
         "version": "11",
-        "imageUrl": "..\/images\/iphone-11.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-11.png",
         "capacityMb": 65536,
         "color": "Black",
         "price": 699.99,
         "availabilityText": "Availability: In Stock at B90 4SB",
         "isAvailable": true,
         "shippingText": "Unavailable for delivery",
-        "shippingDate": "\n                                Unavailable for delivery                            "
+        "shippingDate": null
     },
     {
         "model": "iphone",
         "version": "11",
-        "imageUrl": "..\/images\/iphone-11.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-11.png",
         "capacityMb": 65536,
         "color": "White",
         "price": 699.99,
         "availabilityText": "Availability: In Stock at B90 4SB",
         "isAvailable": true,
         "shippingText": "Unavailable for delivery",
-        "shippingDate": "\n                                Unavailable for delivery                            "
+        "shippingDate": null
     },
     {
         "model": "iphone",
         "version": "12",
-        "imageUrl": "..\/images\/iphone-12-pro.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/iphone-12-pro.png",
         "capacityMb": 131072,
         "color": "Sky Blue",
         "price": 1099.99,
         "availabilityText": "Availability: In Stock Online",
         "isAvailable": true,
-        "shippingText": "Delivery by 10 Apr 2025",
-        "shippingDate": "\n                                Delivery by 10 Apr 2025                            "
+        "shippingText": "Delivery by Thursday 10th Apr 2025",
+        "shippingDate": "2025-04-10"
     },
     {
         "model": "samsung",
         "version": "Galaxy S20",
-        "imageUrl": "..\/images\/s-20.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/s-20.png",
         "capacityMb": 131072,
         "color": "Grey",
         "price": 849.99,
         "availabilityText": "Availability: In Stock",
         "isAvailable": true,
         "shippingText": null,
-        "shippingDate": ""
+        "shippingDate": null
     },
     {
         "model": "huawei",
         "version": "P30",
-        "imageUrl": "..\/images\/p-30.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/p-30.png",
         "capacityMb": 131072,
         "color": "Black",
         "price": 699.99,
         "availabilityText": "Availability: In Stock",
         "isAvailable": true,
         "shippingText": null,
-        "shippingDate": ""
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Orange",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Yellow",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Grey",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     },
     {
         "model": "nokia",
         "version": "3310",
-        "imageUrl": "..\/images\/nokia-3310.png",
+        "imageUrl": "https:\/\/www.magpiehq.com\/developer-challenge\/images\/nokia-3310.png",
         "capacityMb": 102400,
         "color": "Blue",
         "price": 99.99,
         "availabilityText": "Availability: Out of Stock",
         "isAvailable": false,
-        "shippingText": "Delivery from 2025-05-09",
-        "shippingDate": "\n                                Delivery from 2025-05-09                            "
+        "shippingText": "Delivery from 9 May 2025",
+        "shippingDate": null
     }
 ]

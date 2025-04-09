@@ -2,26 +2,49 @@
 
 require 'vendor/autoload.php';
 
-// $dateCombinations = [
-//     'Delivery by Thursday 10th Apr 2025',
-//     'Available on 16 Apr 2025',
-//     'Delivery by Thursday 10th Apr 2025',
-//     'Available on 16 Apr 2025', 
-//     'Free Shipping',
-//     'Delivery from Friday 9th May 2025',
-//     'Delivers Wednesday 9th Apr 2025',
-//     'Free Delivery 2025-04-10',
-//     'Free Delivery tomorrow',
-//     'Delivers Wednesday 9th Apr 2025',
-//     'Free Delivery 2025-04-10',
-//     'Delivers 9 Apr 2025',
-//     'Order within 6 hours and have it 11 Apr 2025',
-//     'Free Delivery Thursday 10th Apr 2025',
-//     'Free Delivery Thursday 10th Apr 2025'
-// ];
+use App\Utils\Date\DateExctractor;
+use App\Data\ScrapedProduct;
+use App\Formatter\ScrapedProduct\ScrapedProductTransformer;
 
-$untrimmed = "\n                    \n                        \n                            iPhone 11\n                            64GB\n                        \n                        \n                        \n                            \n                                                                    \n                                        \n                                    \n                                                                    \n                                        \n                                    \n                                                            \n                        \n                        \n                            \u00a3699.99                        \n                        \n                            Availability: In Stock at B90 4SB                        \n                                                    \n                                Unavailable for delivery                            \n                                            \n                ";
-$trimmed = str_replace("\n", "", $untrimmed);
-$trimmed = trim(preg_replace('/\s\s+/', ' ', $trimmed));
+$json = <<<EOF
+[
+    {
+        "title": "iPhone 12 Pro Max 128GB",
+        "price": "1099.99",
+        "imageUrl": "../images/iphone-12-pro.png",
+        "variant": "Sky Blue",
+        "capacity": "128GB",
+        "availabilityText": "                            Availability: In Stock Online                        ",
+        "shippingText": "                                Delivery by Thursday 10th Apr 2025                            "
+    }
+]
+EOF;
 
-echo $trimmed;
+$data = json_decode($json, true);
+
+if(!$data) {
+    echo 'Error: ' . json_last_error_msg() . "\n\n";
+    exit;
+}
+
+echo 'Data: ' . json_encode($data, JSON_PRETTY_PRINT) . "\n\n";
+
+$scrapedProduct = new ScrapedProduct(
+    $data[0]['title'],
+    $data[0]['price'],
+    $data[0]['imageUrl'],
+    $data[0]['variant'],
+    $data[0]['capacity'],
+    $data[0]['availabilityText'],
+    $data[0]['shippingText']
+);
+
+echo 'Scraped Product: ' . json_encode($scrapedProduct, JSON_PRETTY_PRINT) . "\n\n";
+
+$transformer = new ScrapedProductTransformer();
+
+$phoneProduct = $transformer->transform([$scrapedProduct]);
+
+echo 'Phone Product: ' . json_encode($phoneProduct, JSON_PRETTY_PRINT) . "\n\n";
+
+

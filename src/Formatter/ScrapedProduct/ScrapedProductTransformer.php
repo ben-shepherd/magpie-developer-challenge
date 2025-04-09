@@ -7,6 +7,8 @@ use App\Data\ScrapedProduct;
 use App\Services\LoggerService;
 use App\Services\PhoneProductService;
 use App\Utils\Phone\StorageDetector;
+use App\Utils\Date\DateExctractor;
+use App\Scraper\MagpiehqScraper;
 
 /**
  * Transformer class that removes duplicate phone products from scraped data.
@@ -43,10 +45,6 @@ class ScrapedProductTransformer
         $dtoArray = $transformer->transformToHardwareProduct($scrapedProducts);
         $transformer->logger->info("transformToHardwareProduct result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
         
-        // Remove white spaces and new lines from the array
-        $dtoArray = $transformer->trimLines($dtoArray);
-        $transformer->logger->info("trimLines result:\n" . json_encode($dtoArray, JSON_PRETTY_PRINT));
-
         // Process each PhoneProduct and keep only the first occurrence of each unique product
         // $dtoArray = $transformer->transformRemoveDuplicates($dtoArray);
 
@@ -73,9 +71,7 @@ class ScrapedProductTransformer
             foreach($data as $key => $value) {
 
                 if(in_array($key, $requiresTrim) && is_string($value)) {
-                    $trimmed = str_replace("\n", "", $value);
-                    $trimmed = trim(preg_replace('/\s\s+/', ' ', $trimmed));
-                    $result[$key] = $trimmed;
+                    $result[$key] = $this->trim($value);
                     continue;
                 }
 
@@ -85,6 +81,17 @@ class ScrapedProductTransformer
             $this->logger->info("Trimming lines: " . json_encode($result));
             return PhoneProduct::fromArray($result);
         }, $dtoArray);
+    }
+
+    protected function trim(string|null $text): string|null
+    {
+        if($text === null) {
+            return null;
+        }
+
+        $trimmed = str_replace("\n", "", $text);
+        $trimmed = trim(preg_replace('/\s\s+/', ' ', $trimmed));
+        return $trimmed;
     }
 
     /**
@@ -112,6 +119,7 @@ class ScrapedProductTransformer
 
         // Process each PhoneProduct and keep only the first occurrence of each unique product
         foreach ($dtoArray as $data) {
+
             // Generate a unique identifier for this product
             $PhoneProductId = $transformer->getUniquePhoneProductId($data->toArray());
 
@@ -138,19 +146,21 @@ class ScrapedProductTransformer
      */
     protected function transformToHardwareProduct(array $scrapedProducts): array
     {
-        $this->logger->info('transformToHardwareProduct');
-
         return array_map(function (ScrapedProduct $scrapedProduct) {
 
             $title = $scrapedProduct->title;
             $price = $scrapedProduct->price;
-            $imageUrl = $scrapedProduct->imageUrl;
+            $imageUrl = $this->refineImageUrl($scrapedProduct->imageUrl);
             $model = PhoneProductService::detectModel($title);
             $version = PhoneProductService::detectVersion($title, $model);
             $colour = $scrapedProduct->variant;
             $capacityMb = StorageDetector::extractStorageMegabytes($title);
-            $isAvailable = $this->extractAvailabilityBoolean($scrapedProduct->availabilityText);
-            $shippingDate = $this->extractShippingDate($scrapedProduct->shippingText);
+
+            $availabilityText = $this->trim($scrapedProduct->availabilityText);
+            $isAvailable = $this->extractAvailabilityBoolean($availabilityText);
+
+            $shippingText = $this->trim($scrapedProduct->shippingText);
+            $shippingDate = $this->extractShippingDate($shippingText);
 
             // Create and return a new PhoneProduct with    the extracted data
             $hardwareProduct = new PhoneProduct(
@@ -160,9 +170,9 @@ class ScrapedProductTransformer
                 $colour,
                 $imageUrl,
                 $price,
-                $scrapedProduct->availabilityText,
+                $availabilityText,
                 $isAvailable,
-                $scrapedProduct->shippingText,
+                $shippingText,
                 $shippingDate,
             );
 
@@ -170,16 +180,57 @@ class ScrapedProductTransformer
         }, $scrapedProducts);
     }
 
-    protected function extractShippingDate(string|null $shippingText): string
+    /**
+     * Refines an image URL by ensuring it starts with a forward slash and is prefixed with the base URL.
+     * 
+     * @param string $imageUrl The image URL to refine
+     * @return string The refined image URL
+     */
+    protected function refineImageUrl(string $imageUrl): string
     {
-        if($shippingText === null) {
-            return "";
+        if(str_starts_with($imageUrl, '..')) {
+            $imageUrl = substr($imageUrl, 2);
+
+            if(!str_starts_with($imageUrl, '/')) {
+                $imageUrl = '/' . $imageUrl;
+            }
+
+            $imageUrl = MagpiehqScraper::$imageBaseUrl . $imageUrl;
         }
 
-        // TODO: Implement this
-        return $shippingText;
+        return $imageUrl;
     }
 
+    /**
+     * Extracts a shipping date from a shipping text string.
+     * 
+     * @param string|null $shippingText The shipping text string to extract the date from
+     * @return string|null The extracted date or null if no date is found
+     */
+    protected function extractShippingDate(string|null $shippingText): string|null
+    {
+        if($shippingText === null) {
+            return null;
+        }
+
+        $date = DateExctractor::extractDate($shippingText);
+
+        if(!$date) {
+            return null;
+        }
+
+        // format date as Y-m-d
+        $date = $date->format('Y-m-d');
+
+        return $date;
+    }
+
+    /**
+     * Extracts a boolean value indicating availability from a text string.
+     * 
+     * @param string $availabilityText The text string to extract the availability from
+     * @return bool The extracted availability boolean
+     */
     protected function extractAvailabilityBoolean(string $availabilityText): bool
     {
         return str_contains(strtolower($availabilityText), 'in stock');

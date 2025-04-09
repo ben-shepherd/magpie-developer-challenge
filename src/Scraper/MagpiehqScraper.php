@@ -16,6 +16,10 @@ use App\Utils\Phone\StorageDetector;
  */
 class MagpiehqScraper extends BaseScraper
 {
+    public static $baseUrl = "https://www.magpiehq.com/developer-challenge/smartphones";
+
+    public static $imageBaseUrl = "https://www.magpiehq.com/developer-challenge";
+
     /**
      * Main scraping method that orchestrates the scraping process
      * 
@@ -24,10 +28,12 @@ class MagpiehqScraper extends BaseScraper
     public function scrape(): void
     {
         // Fetch the document from the target URL
-        $documentCrawler = ScrapeHelper::fetchDocument('https://www.magpiehq.com/developer-challenge/smartphones');
+        $documentCrawler = ScrapeHelper::fetchDocument(self::$baseUrl);
 
         // Scrape products
         $this->scrapeDocument($documentCrawler);
+        
+        $this->logger->info("Scraped products:\n" . json_encode($this->products, JSON_PRETTY_PRINT));
 
         // $this->logger->info('Scraped ' . count($this->products) . ' products');
         // $this->logger->info(json_encode($this->products, JSON_PRETTY_PRINT));
